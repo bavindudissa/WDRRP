@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WDRRP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f8fdf77428d471e861e866605ec9de7132e571e4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+236c55f9d2129fcab614de90ab293eb78213346c")]
 [assembly: System.Reflection.AssemblyProductAttribute("WDRRP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WDRRP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,10 +4,10 @@ using WDRRP.Services;
 
 namespace WDRRP.Repositories;
 
-public class EmploymentTypeService : IEmploymentTypeService
+public class EmploymentTypeRepository : IEmploymentTypeService
 {
     private readonly WdrrpContext _dbContext;
-    public EmploymentTypeService(WdrrpContext dbContext)
+    public EmploymentTypeRepository(WdrrpContext dbContext)
     {
         _dbContext = dbContext;
     }

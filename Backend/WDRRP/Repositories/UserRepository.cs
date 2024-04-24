@@ -89,7 +89,7 @@ public class UserRepository : IUserService
 
         if (result == null)
         {
-            throw new InvalidOperationException("Employee not found.");
+            throw new InvalidOperationException("User not found.");
         }
 
         var response = new UserDto{
@@ -182,7 +182,7 @@ public class UserRepository : IUserService
 
     public async Task<UserDto> UpdateUser(UserDto user)
     {
-         var result = await _dbContext.Users
+        var result = await _dbContext.Users
             .FirstOrDefaultAsync(e => e.Id == user.Id && e.IsActive == true);
 
         if (result == null)

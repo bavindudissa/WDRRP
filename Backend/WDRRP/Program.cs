@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WDRRP.Models;
+using WDRRP.Repositories;
+using WDRRP.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WdrrpContext>(option => {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddTransient<IUserService, UserRepository>();
+builder.Services.AddTransient<ISkillService, SkillRepository>();
+builder.Services.AddTransient<IExperienceService, ExperienceRepository>();
+builder.Services.AddTransient<IEducationService, EducationRepository>();
+builder.Services.AddTransient<IEmploymentTypeService, EmploymentTypeRepository>();
+
 
 var app = builder.Build();
 

@@ -103,14 +103,14 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Login([FromBody]string email, [FromBody]string password)
+    public async Task<ActionResult> Login([FromBody]LoginDto dto)
     {
         try
         {
-            if (email == null || password == null)
+            if (dto.Email == null || dto.Password == null)
                 return BadRequest();
 
-            var result =   await _userService.Login(email, password);
+            var result =   await _userService.Login(dto.Email, dto.Password);
 
             if (result == null) return NotFound();
 

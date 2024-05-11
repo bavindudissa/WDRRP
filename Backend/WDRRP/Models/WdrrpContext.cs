@@ -47,22 +47,15 @@ public partial class WdrrpContext : DbContext
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
-     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), option =>{
-            option.EnableRetryOnFailure(maxRetryCount: 2);
-        });
-    }
-    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost,1433;Database=wdrrp;User=sa;Password=MyPass@word;TrustServerCertificate=true");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Certificate>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Certific__3214EC0746C445AC");
+            entity.HasKey(e => e.Id).HasName("PK__Certific__3214EC07030F94D4");
 
             entity.ToTable("Certificate");
 
@@ -76,7 +69,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<Chat>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Chat__3214EC073DA94693");
+            entity.HasKey(e => e.Id).HasName("PK__Chat__3214EC07CB4415E3");
 
             entity.ToTable("Chat");
 
@@ -89,7 +82,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<ChatMessage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ChatMess__3214EC07F5001BC5");
+            entity.HasKey(e => e.Id).HasName("PK__ChatMess__3214EC07DE3D58CB");
 
             entity.ToTable("ChatMessage");
 
@@ -103,7 +96,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<Education>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Educatio__3214EC076E0236C6");
+            entity.HasKey(e => e.Id).HasName("PK__Educatio__3214EC0787419060");
 
             entity.ToTable("Education");
 
@@ -118,7 +111,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<EmploymentType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Employme__3214EC075278815A");
+            entity.HasKey(e => e.Id).HasName("PK__Employme__3214EC073ACE946B");
 
             entity.ToTable("EmploymentType");
 
@@ -130,7 +123,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<Experience>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Experien__3214EC0757D225A7");
+            entity.HasKey(e => e.Id).HasName("PK__Experien__3214EC07595BAC65");
 
             entity.ToTable("Experience");
 
@@ -145,10 +138,11 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<Job>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Job__3214EC0784BD1813");
+            entity.HasKey(e => e.Id).HasName("PK__Job__3214EC07949C9702");
 
             entity.ToTable("Job");
 
+            entity.Property(e => e.ApplicantCollectEmail).HasMaxLength(100);
             entity.Property(e => e.Company).HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
@@ -161,7 +155,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<JobAlert>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__JobAlert__3214EC07ACC8D19C");
+            entity.HasKey(e => e.Id).HasName("PK__JobAlert__3214EC07C02BC6A1");
 
             entity.ToTable("JobAlert");
 
@@ -177,7 +171,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<JobApplied>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__JobAppli__3214EC07DC4D7862");
+            entity.HasKey(e => e.Id).HasName("PK__JobAppli__3214EC07F3F1AA60");
 
             entity.ToTable("JobApplied");
 
@@ -195,7 +189,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<JobFeedback>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__JobFeedb__3214EC07337A5D01");
+            entity.HasKey(e => e.Id).HasName("PK__JobFeedb__3214EC07E9586319");
 
             entity.ToTable("JobFeedback");
 
@@ -210,7 +204,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<JobQuestion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__JobQuest__3214EC073AE3B11B");
+            entity.HasKey(e => e.Id).HasName("PK__JobQuest__3214EC07BB4BE136");
 
             entity.ToTable("JobQuestion");
 
@@ -222,7 +216,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<JobQuestionAnswer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__JobQuest__3214EC07AF60F058");
+            entity.HasKey(e => e.Id).HasName("PK__JobQuest__3214EC07AA63FA5A");
 
             entity.ToTable("JobQuestionAnswer");
 
@@ -237,7 +231,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<Skill>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Skill__3214EC0720AB7C94");
+            entity.HasKey(e => e.Id).HasName("PK__Skill__3214EC07ADBD1D6A");
 
             entity.ToTable("Skill");
 
@@ -251,7 +245,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07B9FA5EF8");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07225B94AF");
 
             entity.ToTable("User");
 
@@ -268,7 +262,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<UserStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserStat__3214EC0720C801F6");
+            entity.HasKey(e => e.Id).HasName("PK__UserStat__3214EC07A6E1165C");
 
             entity.ToTable("UserStatus");
 
@@ -280,7 +274,7 @@ public partial class WdrrpContext : DbContext
 
         modelBuilder.Entity<UserType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserType__3214EC07BB0D6580");
+            entity.HasKey(e => e.Id).HasName("PK__UserType__3214EC078ABD1326");
 
             entity.ToTable("UserType");
 

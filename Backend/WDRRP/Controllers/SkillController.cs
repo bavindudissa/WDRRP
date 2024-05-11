@@ -84,4 +84,22 @@ public class SkillController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Can't update skill.");
         }
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteSkill([FromRoute]int id)
+    {
+        try
+        {
+            var skillToDelete = await _skillService.GetSkill(id);
+
+
+            var result = await _skillService.DeleteSkill(skillToDelete);
+
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Can't delete skill.");
+        }
+    }
 }

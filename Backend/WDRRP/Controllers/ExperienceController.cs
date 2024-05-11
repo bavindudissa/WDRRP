@@ -84,4 +84,22 @@ public class ExperienceController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Can't update experience.");
         }
     }
+
+     [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteExperience([FromRoute]int id)
+    {
+        try
+        {
+            var skillToDelete = await _experienceService.GetExperience(id);
+
+
+            var result = await _experienceService.DeleteExperience(skillToDelete);
+
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Can't delete experience.");
+        }
+    }
 }

@@ -102,7 +102,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody]LoginDto dto)
     {
         try

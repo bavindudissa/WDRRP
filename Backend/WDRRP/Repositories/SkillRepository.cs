@@ -15,7 +15,7 @@ public class SkillRepository : ISkillService
     public async Task<SkillDto> AddSkill(SkillDto skill)
     {
         var resultCheck = await _dbContext.Skills
-            .FirstOrDefaultAsync(e => e.Skill1 == skill.Skill1);
+            .FirstOrDefaultAsync(e => e.Skill1 == skill.Skill1 && e.IsActive == true);
 
         if (resultCheck != null)
         {

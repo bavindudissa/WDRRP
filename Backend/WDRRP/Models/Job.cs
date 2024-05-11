@@ -19,7 +19,7 @@ public partial class Job
 
     public string? Description { get; set; }
 
-    public bool? ApplicantCollectEmail { get; set; }
+    public string? ApplicantCollectEmail { get; set; }
 
     public int? UserId { get; set; }
 

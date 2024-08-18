@@ -6,6 +6,9 @@ function JobPostComponents() {
 
     const [jobList, setJobList] = useState('');
     const [jobId, setJobId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredJobList, setFilteredJobList] = useState([]);
+
 
     const [formData, setFormData] = useState({
         title: '',
@@ -34,6 +37,7 @@ function JobPostComponents() {
             //setUserId(user)
             const response = await axios.get(`http://localhost:5093/api/Job/all/${user}`);
             setJobList(response.data);
+            setFilteredJobList(response.data);
             //console.log("data" + response.data.email);
         } catch (error) {
             console.error('Error fetching job details:', error);
@@ -83,6 +87,7 @@ function JobPostComponents() {
                 // Redirect or show success message
                 setError('')
                 setSucess('Update job', sucess);
+                fetchJobDetails()
             }
             else{
                 setFormData({
@@ -128,11 +133,33 @@ function JobPostComponents() {
         }
       };
 
+      const handleSearch = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchTerm(value);
+
+        const filtered = jobList.filter(job =>
+            job.title.toLowerCase().includes(value)
+        );
+        setFilteredJobList(filtered);
+    };
+
 
   return (
     <div>
        <div className="row fullscreen d-flex align-items-center justify-content-center" style={{ height: '70px', backgroundColor: 'black', color: 'black' }}>			
         </div>
+        <section className="banner-area relative" id="home">
+                <div className="overlay overlay-bg" />
+                <div className="container">
+                    <div className="row d-flex align-items-center justify-content-center">
+                        <div className="about-content col-lg-12">
+                            <h1 className="text-white">
+                                Post Job
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
         <br/>
         <div className="container">
         <div className="main-body">
@@ -226,8 +253,17 @@ function JobPostComponents() {
             </div>
             </div>
             <div className="row justify-content-center d-flex">
+            <div className="col-lg-8 mb-4">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Search job by name"
+                                value={searchTerm}
+                                onChange={handleSearch}
+                            />
+                        </div>
             <div className="col-lg-12 post-list">
-            {jobList && jobList.map(job => (
+            {filteredJobList && filteredJobList.map(job => (
                 <div className="single-post d-flex flex-row">
                 <div className="details">
                     <div className="title d-flex flex-row justify-content-between">
@@ -242,6 +278,11 @@ function JobPostComponents() {
                     </p>
                     <h5>Job Nature: {job.jobType}</h5>
                     <p className="address">Send CV : {job.applicantCollectEmail}</p>
+                     <a class="text-primary text-xs mr-4"
+                     style={{cursor: 'pointer'}}
+                     href={`/job/apply/${job.id}`}>
+                        View Job Applies
+                     </a>
                     <a class="text-primary text-xs mr-4"
                         style={{cursor: 'pointer'}}
                         onClick={() => {

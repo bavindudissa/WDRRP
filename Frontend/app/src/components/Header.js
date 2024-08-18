@@ -20,7 +20,7 @@ function Header() {
                 <div className="container">
                     <div className="row align-items-center justify-content-between d-flex">
                         <div id="logo">
-                            <a href="index.html"><h3 style={{color:"white"}}>Jobzen</h3></a>
+                            <h3 style={{color:"white"}}>Jobzen</h3>
                         </div>
                         <nav id="nav-menu-container">
                             <ul className="nav-menu">
@@ -29,7 +29,8 @@ function Header() {
                                 <li><a href="/candidate">Candidates</a></li>
                                 {userId &&<li><a href="/profile">Profile</a></li>}
                                 {userId &&<li><a href="/jobpost">Job Post</a></li>}
-                                {!userId && <li><a className="ticker-btn" href="#">Signup</a></li>}
+                                {userId &&<li><a href="/myjob">My Job</a></li>}
+                                {!userId && <li><a className="ticker-btn" href="/signup">Signup</a></li>}
                                 {!userId && <li><a className="ticker-btn" href="/login">Login</a></li>}
                                 {userId && <li><a className="ticker-btn" onClick={handleLogout}>Logout</a></li>}
                             </ul>

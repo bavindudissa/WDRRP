@@ -23,4 +23,6 @@ public class UserDto
     public int? UserStatusId { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public string? ProfilePic { get; set; }
 }

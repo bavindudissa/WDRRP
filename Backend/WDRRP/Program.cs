@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using WDRRP.Models;
 using WDRRP.Repositories;
 using WDRRP.Services;
+using Microsoft.Extensions.FileProviders;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,11 @@ builder.Services.AddTransient<IExperienceService, ExperienceRepository>();
 builder.Services.AddTransient<IEducationService, EducationRepository>();
 builder.Services.AddTransient<IEmploymentTypeService, EmploymentTypeRepository>();
 builder.Services.AddTransient<IJobService, JobRepository>();
+builder.Services.AddTransient<IFileService, FileRepository>();
+builder.Services.AddTransient<IProfilePicService, ProfilePicRepository>();
+builder.Services.AddTransient<IJobAppliedService, JobAppliedRepository>();
+builder.Services.AddTransient<IEmailService, EmailRepository>();
+
 
 
 var app = builder.Build();
@@ -45,6 +51,22 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
+
+app.UseStaticFiles(); 
+
+var resourcesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+
+if (!Directory.Exists(resourcesDirectory))
+{
+    Directory.CreateDirectory(resourcesDirectory);
+}
+
+// For serving files from "Resources" directory
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(resourcesDirectory),
+    RequestPath = new PathString("/files")
+});
 
 app.MapControllers();
 

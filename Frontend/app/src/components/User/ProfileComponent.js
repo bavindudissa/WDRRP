@@ -43,12 +43,29 @@ function ProfileComponent() {
         grade: '',
         userId: ''
     });
+
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+    });
+    
+    const [showPassword, setShowPassword] = useState({
+        currentPassword: false,
+        newPassword: false,
+        confirmNewPassword: false,
+    });
+    
     const [error, setError] = useState('');
     const [sucess, setSucess] = useState('');
     const [skillList, setSkillList] = useState('');
     const [exList, setExList] = useState('');
     const [eduList, setEduList] = useState('');
     const [skillName, setSkillName] = useState('');
+
+    // Profile picture state
+    const [profilePic, setProfilePic] = useState(null);
+    const [newProfilePic, setNewProfilePic] = useState(null);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,6 +84,15 @@ function ProfileComponent() {
     const handleSkillNameChange = (e) => {
         setSkillName(e.target.value);
       };
+
+      const handlePasswordChange = (e) => {
+        setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+    };
+    
+    const toggleShowPassword = (field) => {
+        setShowPassword({ ...showPassword, [field]: !showPassword[field] });
+    };
+    
 
     const fetchUserDetails = async () => {
         try {
@@ -141,11 +167,54 @@ function ProfileComponent() {
         }
     };
 
+    const fetchUserProfilePic = async () => {
+        try {
+            const user = localStorage.getItem('userId');
+            const response = await axios.get(`http://localhost:5093/api/ProPic/${user}`);
+            setProfilePic('http://localhost:5093/files/'+response.data.link);
+            console.log(profilePic)
+        } catch (error) {
+            console.error('Error fetching profile picture:', error);
+        }
+    };
+
+    const handleProfilePicChange = (e) => {
+        const file = e.target.files[0];
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif')) {
+            setNewProfilePic(file);
+        } else {
+            setError('Please select a valid image file (jpg, png, gif).');
+        }
+    };
+    
+
+    const handleProfilePicUpload = async () => {
+        if (!newProfilePic) return;
+        
+        const formData = new FormData();
+        formData.append('file', newProfilePic);
+        formData.append('id', localStorage.getItem('userId'));
+
+        try {
+            await axios.post('http://localhost:5093/api/ProPic', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setSucess('Profile picture updated successfully');
+            fetchUserProfilePic();
+        } catch (error) {
+            console.error('Error uploading profile picture:', error);
+            setError('Error uploading profile picture');
+        }
+    };
+
     useEffect(() => {
         fetchUserDetails()
         fetchUserSkills()
         fetchUserExs()
         fetchUserEdu()
+        fetchUserProfilePic()
     }, []);
 
     const handleCancel = () => {
@@ -277,17 +346,156 @@ function ProfileComponent() {
         }
       };
 
+      const handleChangePassword = async () => {
+        if (passwordData.newPassword !== passwordData.confirmNewPassword) {
+            alert("New Password and Confirm New Password do not match.");
+            return;
+        }
+    
+        try {
+            const response = await axios.post('http://localhost:5093/api/User/change-password', {
+                email: formData.email, // assuming email is available in formData
+                oldPassword: passwordData.currentPassword,
+                newPassword: passwordData.newPassword,
+            });
+            setPasswordData({
+                currentPassword: '',
+                newPassword: '',
+                confirmNewPassword: '',
+            });
+            setError('');
+            alert('Password changed successfully');
+        } catch (err) {
+            alert(err.response.data || 'Something went wrong');
+        }
+    };
+    
+
     
 
   return (
     <div>
         <div className="row fullscreen d-flex align-items-center justify-content-center" style={{ height: '70px', backgroundColor: 'black', color: 'black' }}>			
         </div>
+        <section className="banner-area relative" id="home">
+                <div className="overlay overlay-bg" />
+                <div className="container">
+                    <div className="row d-flex align-items-center justify-content-center">
+                        <div className="about-content col-lg-12">
+                            <h1 className="text-white">
+                                Profile
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
         <br/>
         <div className="container">
         <div className="main-body">
             <div className="row">
             <div className="col-lg-4">
+                <div className="card">
+                <div className="card-body">
+                    <div className="d-flex flex-column align-items-center text-center">
+                    <div className="mt-1">
+                                            {profilePic ? (
+                                                <img src={profilePic} alt="Profile" className="img-thumbnail" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
+                                            ) : (
+                                                <p>No profile picture uploaded</p>
+                                            )}
+                                        </div>
+                                        <div className="mt-3">
+                                            <input type="file" onChange={handleProfilePicChange} />
+                                            <button className="btn btn-primary mt-2" onClick={handleProfilePicUpload}>Upload</button>
+                                        </div>
+                                        </div>
+                </div>
+                </div>
+                <br/>
+                <div className="card">
+    <div className="card-body">
+        <h5 className="d-flex align-items-center mb-3">Password Change</h5>
+        <hr className="my-4" />
+
+        <div className="col-12 mb-3">
+            <h6 className="mb-0">Current Password</h6>
+            <div className="input-group">
+                <input
+                    type={showPassword.currentPassword ? "text" : "password"}
+                    className="form-control"
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                />
+                <div className="input-group-append">
+                    <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => toggleShowPassword('currentPassword')}
+                    >
+                        {showPassword.currentPassword ? "Hide" : "Show"}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div className="col-12 mb-3">
+            <h6 className="mb-0">New Password</h6>
+            <div className="input-group">
+                <input
+                    type={showPassword.newPassword ? "text" : "password"}
+                    className="form-control"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                />
+                <div className="input-group-append">
+                    <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => toggleShowPassword('newPassword')}
+                    >
+                        {showPassword.newPassword ? "Hide" : "Show"}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div className="col-12 mb-3">
+            <h6 className="mb-0">Confirm New Password</h6>
+            <div className="input-group">
+                <input
+                    type={showPassword.confirmNewPassword ? "text" : "password"}
+                    className="form-control"
+                    name="confirmNewPassword"
+                    value={passwordData.confirmNewPassword}
+                    onChange={handlePasswordChange}
+                />
+                <div className="input-group-append">
+                    <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => toggleShowPassword('confirmNewPassword')}
+                    >
+                        {showPassword.confirmNewPassword ? "Hide" : "Show"}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div className="row mb-3">
+            <div className="col-4 mb-3">
+               
+            </div>
+            <div className="col-8 mb-3">
+            <button className="btn btn-danger mr-2" onClick={handleCancel}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleChangePassword}>Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <br/>
                 <div className="card">
                 <div className="card-body">
                     <div className="d-flex flex-column align-items-center text-center">

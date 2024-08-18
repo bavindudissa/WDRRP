@@ -9,6 +9,10 @@ import Job from './pages/Job'
 import JobPost from './pages/JobPost'
 import Candidate from './pages/Candidate'
 import ProfileView from './pages/ProfileView'
+import JobPostApply from './pages/JobPostApply'
+import MyJob from './pages/MyJob'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function SiteRoute() {
   return (
@@ -22,6 +26,10 @@ function SiteRoute() {
             <Route path='/jobpost' exact element={<JobPost/>} />
             <Route path='/candidate' exact element={<Candidate/>} />
             <Route path='/profileview/:id' exact element={<ProfileView/>} />
+            <Route path='/job/apply/:id' exact element={<JobPostApply/>} />
+            <Route path='/myjob' exact element={<MyJob/>} />
+            <Route path='/forgotpassword' exact element={<ForgotPassword/>} />
+            <Route path='/resetpassword' exact element={<ResetPassword/>} />
 
          </Routes>
     </div>

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  // State variables to hold form input values
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dob, setDOB] = useState('');
@@ -11,45 +10,46 @@ function Register() {
   const [contactNumber, setContactNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Function to handle button click event and API call
   const handleSignUp = () => {
+    if (!firstName || !lastName || !dob || !gender || !contactNumber || !email || !password) {
+      alert("Please fill out all required fields.");
+      return;
+    }
     const formData = {
-        FirstName : firstName,
-        LastName : lastName,
-        DateOfBirth : dob,
-        Gender : gender,
-        ContactNumber : contactNumber,
-        Email : email,
-        Password : password
+        FirstName: firstName,
+        LastName: lastName,
+        DateOfBirth: dob,
+        Gender: gender,
+        ContactNumber: contactNumber,
+        Email: email,
+        Password: password
     };
 
-    // Additional custom data
     const customData = {
         UserStatusId: 1,
         UserTypeId: 1
-      // Add more custom fields as needed
     };
 
-    // Combine form data with custom data
     const requestData = {
       ...formData,
       ...customData
     };
 
-    // API call using Axios
     axios.post('http://localhost:5093/api/User', requestData)
       .then(response => {
-        // Handle successful response
         console.log('Registration successful');
         navigate("/login");
-
       })
       .catch(error => {
-        // Handle error
         console.error('Registration failed:', error);
       });
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -62,7 +62,7 @@ function Register() {
                 <div className="card-body p-5 text-center">
                   <div className="mb-md-2 mt-md-2 pb-2">
                     <h2 className="fw-bold mb-2 text-uppercase" style={{ color: '#795fff' }}>Sign Up</h2>
-                    <p className="text-white-50 mb-3">Please enter your details to create account!</p>
+                    <p className="text-white-50 mb-3">Please enter your details to create an account!</p>
                     <div data-mdb-input-init className="form-outline form-white mb-4">
                       <input type="text" className="form-control" name="firstName" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
                     </div>
@@ -92,7 +92,24 @@ function Register() {
                       <input type="text" className="form-control" name="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div data-mdb-input-init className="form-outline form-white mb-4">
-                      <input type="password" className="form-control" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                      <div className="input-group">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          className="form-control"
+                          name="password"
+                          placeholder="Password"
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-outline-secondary"
+                            type="button"
+                            onClick={toggleShowPassword}
+                          >
+                            {showPassword ? "Hide" : "Show"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                     <button type="button" className="btn btn-info" onClick={handleSignUp}>Sign Up</button>
                   </div>

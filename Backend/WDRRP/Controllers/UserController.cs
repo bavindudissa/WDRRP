@@ -121,4 +121,65 @@ public class UserController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Invalid credintials");
         }
     }
+
+    [HttpGet("count")]
+    public async Task<ActionResult> UserCount()
+    {
+        try
+        {
+            return Ok(await _userService.UserCount());
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Can't get users.");
+        }
+    }
+
+    [HttpPost("change-password")]
+    public async Task<ActionResult> ChangePassword([FromBody] PasswordChangeDto dto)
+    {
+        try
+        {
+
+            var result = await _userService.ChangePassword(dto);
+
+            if (result == null) return NotFound();
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<ActionResult> ForgotPassowrd([FromBody] ForgotPasswordDto dto)
+    {
+        try
+        {
+            var result = await _userService.ForgotPassword(dto);
+            if (result == false)return NotFound();
+            return Ok("Rest password link sent.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult> ResetPassword([FromBody] PasswordRestDto dto)
+    {
+        try
+        {
+            var result = await _userService.ResetPassword(dto);
+            if (result == false)return NotFound();
+            return Ok("Rest password sucessful.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

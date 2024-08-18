@@ -114,4 +114,30 @@ public class JobController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Can't delete job.");
         }
     }
+
+    [HttpGet("count")]
+    public async Task<ActionResult> JobCount()
+    {
+        try
+        {
+            return Ok(await _jobService.JobCount());
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Can't get jobs.");
+        }
+    }
+
+    [HttpGet("latest")]
+    public async Task<ActionResult> GetLatestJobs()
+    {
+        try
+        {
+            return Ok(await _jobService.GetLatestJobs());
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Can't get jobs.");
+        }
+    }
 }

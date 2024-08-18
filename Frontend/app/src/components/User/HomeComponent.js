@@ -1,6 +1,44 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function HomeComponent() {
+    const [jobList, setJobList] = useState([]);
+    const [jobCount, setJobCount] = useState(0);
+    const [userCount, setUserCount] = useState(0);
+    useEffect(() => {
+        fetchJobCount();
+        fetchUserCount();
+        fetchJobDetails()
+    }, []);
+
+    const fetchJobCount = async () => {
+        try {
+            const response = await axios.get('http://localhost:5093/api/Job/count');
+            setJobCount(response.data);
+        } catch (error) {
+            console.error('Error fetching job details:', error);
+        }
+    };
+
+    const fetchUserCount = async () => {
+        try {
+            const response = await axios.get('http://localhost:5093/api/User/count');
+            setUserCount(response.data);
+        } catch (error) {
+            console.error('Error fetching job details:', error);
+        }
+    };
+
+    const fetchJobDetails = async () => {
+        try {
+            const response = await axios.get('http://localhost:5093/api/Job/latest');
+            setJobList(response.data);
+        } catch (error) {
+            console.error('Error fetching job details:', error);
+        }
+    };
+
+
   return (
     <div>
         <div className="row fullscreen d-flex align-items-center justify-content-center" style={{ height: '70px', backgroundColor: 'black', color: 'black' }}>			
@@ -11,7 +49,10 @@ function HomeComponent() {
                 <div className="row fullscreen d-flex align-items-center justify-content-center" style={{height: 813}}>
                 <div className="banner-content col-lg-12">
                     <h1 className="text-white">
-                    <span>1500+</span> Jobs posted last week				
+                    <span>{jobCount}+</span> Jobs posts			
+                    </h1>	
+                    <h1 className="text-white">
+                    <span>{userCount}+</span> Candidates and Recruiters		
                     </h1>	
                     {/* <form action="search.html" className="serach-form-area">
                     <div className="row justify-content-center form-wrap">
@@ -47,7 +88,7 @@ function HomeComponent() {
                         </div>								
                     </div>
                     </form>	 */}
-                    <p className="text-white"> <span>Search by tags:</span> Tecnology, Business, Consulting, IT Company, Design, Development</p>
+                    {/* <p className="text-white"> Tecnology, Business, Consulting, IT Company, Design, Development</p> */}
                 </div>											
                 </div>
             </div>
@@ -95,12 +136,37 @@ function HomeComponent() {
             <div className="row d-flex justify-content-center">
             <div className="menu-content pb-60 col-lg-10">
                 <div className="title text-center">
-                <h1 className="mb-10">Featured Job Categories</h1>
+                <h1 className="mb-10">Explore Jobs</h1>
                 <p>Who are in extremely love with eco friendly system.</p>
                 </div>
             </div>
-            </div>						
-            <div className="row">
+            {jobList && jobList.map(job => (
+                <div className="col-lg-4 post-list" key={job.id}>
+                    <div className="single-post d-flex flex-row">
+                        <div className="details">
+                            <div className="title d-flex flex-row justify-content-between">
+                                <div className="titles">
+                                    <h4>{job.title}</h4>
+                                    <h6>Company: {job.company}</h6>
+                                </div>
+                            </div>
+                            <p className="card-text">Work Place Scale: {job.workplaceType}</p>
+                            <p className="card-text">Location: {job.location}</p>
+                            <p className="card-text">Job Type: {job.jobType}</p>
+                        </div>
+                    </div>
+                </div>
+            ))}
+            </div>		
+<center>
+    <a href='/job'>
+    <button type="button" className="btn btn-primary" style={{marginBottom: "20px"}}>
+                                            View More
+                                        </button>
+
+    </a>
+    </center>
+            {/* <div className="row">
             <div className="col-lg-2 col-md-4 col-sm-6">
                 <div className="single-fcat">
                 <a href="category.html">
@@ -149,7 +215,7 @@ function HomeComponent() {
                 <p>Goverment</p>
                 </div>			
             </div>																											
-            </div>
+            </div> */}
         </div>	
         </section>
 

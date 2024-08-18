@@ -79,13 +79,35 @@ function ProfileViewComponet() {
     <div>
         <div className="row fullscreen d-flex align-items-center justify-content-center" style={{ height: '70px', backgroundColor: 'black', color: 'black' }}>			
         </div>
+        <section className="banner-area relative" id="home">
+                <div className="overlay overlay-bg" />
+                <div className="container">
+                    <div className="row d-flex align-items-center justify-content-center">
+                        <div className="about-content col-lg-12">
+                            <h1 className="text-white">
+                                Profile
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
         <br/>
         <section className="blog-posts-area section-gap">
             <div className="container">
                 <div className="row">
                 <div className="col-lg-4 sidebar">
                     <div className="single-widget protfolio-widget">
+                    {cList.profilePic ? (
+                                        <img src={`http://localhost:5093/files/${cList.profilePic}`} alt="Profile" className="img-thumbnail" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
+                                    ) : (
+                                        <p>No profile picture uploaded</p>
+                                    )}
                     <a href="#"><h4>{cList.firstName} {cList.lastName}</h4></a>
+                    <p>
+                        {cList.gender}
+                        <br/>
+                        {cList.dateOfBirth}
+                    </p>
                     <p>
                     {cList.email}
                     </p>

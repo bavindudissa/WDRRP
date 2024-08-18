@@ -92,6 +92,7 @@ public class JobRepository : IJobService
             Description = result.Description,
             ApplicantCollectEmail = result.ApplicantCollectEmail,
             UserId = result.UserId,
+            UserName = (from user in _dbContext.Users where user.Id == result.UserId select user.FirstName + " " + user.LastName).FirstOrDefault(),
             IsActive = true
         };
 
@@ -112,6 +113,7 @@ public class JobRepository : IJobService
                 Description = job.Description,
                 ApplicantCollectEmail = job.ApplicantCollectEmail,
                 UserId = job.UserId,
+                UserName = (from user in _dbContext.Users where user.Id == job.UserId select user.FirstName + " " + user.LastName).FirstOrDefault(),
                 IsActive = true
             }).ToListAsync();
 
@@ -132,8 +134,41 @@ public class JobRepository : IJobService
                 Description = job.Description,
                 ApplicantCollectEmail = job.ApplicantCollectEmail,
                 UserId = job.UserId,
+                UserName = (from user in _dbContext.Users where user.Id == job.UserId select user.FirstName + " " + user.LastName).FirstOrDefault(),
                 IsActive = true
             }).ToListAsync();
+
+        return data;
+    }
+
+public async Task<IEnumerable<JobDto>> GetLatestJobs()
+{
+    var data = await (from job in _dbContext.Jobs
+                      where job.IsActive == true
+                      orderby job.CreatedAt descending // Assuming you have a CreatedAt field
+                      select new JobDto
+                      {
+                          Id = job.Id,
+                          Title = job.Title,
+                          Company = job.Company,
+                          WorkplaceType = job.WorkplaceType,
+                          Location = job.Location,
+                          JobType = job.JobType,
+                          Description = job.Description,
+                          ApplicantCollectEmail = job.ApplicantCollectEmail,
+                          UserId = job.UserId,
+                          UserName = (from user in _dbContext.Users where user.Id == job.UserId select user.FirstName + " " + user.LastName).FirstOrDefault(),
+                          IsActive = true
+                      }).Take(6).ToListAsync();
+
+    return data;
+}
+
+    public async Task<int> JobCount()
+    {
+        var data = await (from job in _dbContext.Jobs
+            where job.IsActive == true //&& skill.UserId == userId
+            select job).CountAsync();
 
         return data;
     }

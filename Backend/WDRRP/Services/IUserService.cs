@@ -11,5 +11,10 @@ public interface IUserService
         Task<bool> DeleteUser(UserDto user);
         Task<IEnumerable<UserDto>> SearchUsers(string userName);
         Task<UserDto> Login(string email, string password);
+        Task<int> UserCount();
+
+        Task<string> ChangePassword(PasswordChangeDto changeDto);
+        Task<bool> ForgotPassword(ForgotPasswordDto forgotPasswordDto);
+        Task<bool> ResetPassword(PasswordRestDto passwordRestDto);
 
 }

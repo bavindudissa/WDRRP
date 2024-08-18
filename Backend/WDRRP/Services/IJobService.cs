@@ -8,4 +8,7 @@ public interface IJobService
     Task<JobDto> AddJob(JobDto job);
     Task<JobDto> UpdateJob(JobDto job);
     Task<bool> DeleteJob(JobDto job);
+    Task<int> JobCount();
+
+    Task<IEnumerable<JobDto>> GetLatestJobs();
 }

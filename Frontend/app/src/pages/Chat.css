@@ -1,0 +1,35 @@
+/* Chat Page Layout */
+.chat-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Make the chat content area fill the space between header and footer */
+.chat-content {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Center the ChatComponent horizontally */
+    align-items: center;     /* Center the ChatComponent vertically if needed */
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Chat container for full-width */
+.chat-container {
+    width: 100%;
+    max-width: 1200px; /* Adjust max-width as desired */
+    height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Header and Footer styling if not displaying */
+header, footer {
+    z-index: 1;
+    position: relative;
+}

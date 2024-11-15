@@ -9,6 +9,7 @@ public interface IJobService
     Task<JobDto> UpdateJob(JobDto job);
     Task<bool> DeleteJob(JobDto job);
     Task<int> JobCount();
+    Task<Dictionary<string, List<JobDto>>> GetRecommendedJobs(int userId);
 
     Task<IEnumerable<JobDto>> GetLatestJobs();
 }

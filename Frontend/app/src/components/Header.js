@@ -14,6 +14,12 @@ function Header() {
         navigate("/");
       };
 
+      const handleChat = () => {
+        // Navigate to another page (replace '/login' with your desired path)
+        navigate("/chatbot");
+      };
+
+
     return (
         <div style={{ backgroundColor: 'black' }}>
             <header id="header">
@@ -29,10 +35,12 @@ function Header() {
                                 <li><a href="/candidate">Candidates</a></li>
                                 {userId &&<li><a href="/profile">Profile</a></li>}
                                 {userId &&<li><a href="/jobpost">Job Post</a></li>}
+                                {userId &&<li><a href="/jobrecommendation">Job Recommendations</a></li>}
                                 {userId &&<li><a href="/myjob">My Job</a></li>}
-                                {!userId && <li><a className="ticker-btn" href="/signup">Signup</a></li>}
-                                {!userId && <li><a className="ticker-btn" href="/login">Login</a></li>}
-                                {userId && <li><a className="ticker-btn" onClick={handleLogout}>Logout</a></li>}
+                                {userId && <li><a className="ticker-btn" style={{backgroundColor: 'limegreen', color: 'white', cursor: 'pointer' }} onClick={handleChat}>Chat bot</a></li>}
+                                {!userId && <li><a className="ticker-btn" href="/signup" style={{cursor: 'pointer' }}>Signup</a></li>}
+                                {!userId && <li><a className="ticker-btn" href="/login" style={{cursor: 'pointer' }}>Login</a></li>}
+                                {userId && <li><a className="ticker-btn" onClick={handleLogout} style={{cursor: 'pointer' }}>Logout</a></li>}
                             </ul>
                         </nav>
                     </div>

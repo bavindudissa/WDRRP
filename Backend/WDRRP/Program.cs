@@ -36,7 +36,9 @@ builder.Services.AddTransient<IFileService, FileRepository>();
 builder.Services.AddTransient<IProfilePicService, ProfilePicRepository>();
 builder.Services.AddTransient<IJobAppliedService, JobAppliedRepository>();
 builder.Services.AddTransient<IEmailService, EmailRepository>();
-
+builder.Services.AddHttpClient<IJobService, JobRepository>();
+builder.Services.AddTransient<IChatBotService, ChatBotRepository>();
+builder.Services.AddHttpClient<ChatBotRepository, ChatBotRepository>();
 
 
 var app = builder.Build();

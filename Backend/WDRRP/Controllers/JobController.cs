@@ -140,4 +140,19 @@ public class JobController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Can't get jobs.");
         }
     }
+
+    [HttpGet("recommend/{userId:int}")]
+    public async Task<ActionResult> GetRecommendedJobs([FromRoute] int userId)
+    {
+        try
+        {
+            var recommendedJobs = await _jobService.GetRecommendedJobs(userId);
+            return Ok(recommendedJobs);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
 }
